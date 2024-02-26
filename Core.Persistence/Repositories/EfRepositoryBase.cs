@@ -1,5 +1,4 @@
-﻿// , IRepository<TEntity, TEntityId>
-using Core.Persistence.Dynamic;
+﻿using Core.Persistence.Dynamic;
 using Core.Persistence.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -17,7 +16,7 @@ namespace Core.Persistence.Repositories;
 
 // This class is a base implementation for an asynchronous repository using Entity Framework Core.
 public class EfRepositoryBase<TEntity, TEntityId, TContext>
-    : IAsyncRepository<TEntity, TEntityId>
+    : IAsyncRepository<TEntity, TEntityId> //IRepository<TEntity, TEntityId> // This can be use the Sync version of Repository if necessary.
     where TEntity : Entity<TEntityId> // TEntity must inherit from Entity<TEntityId>.
     where TContext : DbContext // TContext must be a subclass of DbContext.
 {
@@ -253,7 +252,7 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
     }
 
     // Sets a collection of entities as deleted, either soft or permanent.
-    protected async Task SetEntityAsDeletedAsync(IEnumerable<TEntity> entities, bool permanent)
+    protected async Task SetEntityAsDeletedAsync(IEnumerable<TEntity> entities, bool permanent) // This is an overload function.
     {
         foreach (TEntity entity in entities)
             await SetEntityAsDeletedAsync(entity, permanent); // Set each entity as deleted.
