@@ -2,6 +2,7 @@
 - [DynamicQuery Class](#dynamic-query-implementation)
 - [IQueryable Paginate Extensions](#iqueryable-paginate-extensions)
 - [Sync and Async Repository](#sync-and-async-repository)
+- [IQueryable Dynamic Filter Extensions](#iqueryable-dynamic-filter-extensions)
 ---
 
 # Dynamic Query Implementation
@@ -170,3 +171,87 @@ This is the asynchronous (Async) version of the repository interface. It include
 The key difference between the two interfaces lies in their nature of execution:
 - `IRepository (Sync):` Methods perform database operations synchronously, meaning they block the execution until the operation completes.
 - `IAsyncRepository (Async)`: Methods perform database operations asynchronously, allowing the calling code to continue its execution while waiting for the database operation to complete. This is beneficial for responsiveness in applications, especially in scenarios where database calls may take some time.
+
+
+# IQueryable Dynamic Filter Extensions
+
+This utility provides extension methods for applying dynamic filters and sorting to `IQueryable` collections using Dynamic LINQ.
+
+## Usage
+
+1. **ToDynamic**: Applies dynamic filters and sorting to an `IQueryable` based on a `DynamicQuery` object.
+
+    ```csharp
+    IQueryable<T> result = yourQueryable.ToDynamic(yourDynamicQuery);
+    ```
+
+2. **Filter**: Applies dynamic filters to an `IQueryable` based on a `Filter` object.
+
+    ```csharp
+    IQueryable<T> result = IQueryableDynamicFilterExtensions.Filter(yourQueryable, yourFilter);
+    ```
+
+3. **Sort**: Applies dynamic sorting to an `IQueryable` based on a collection of `Sort` objects.
+
+    ```csharp
+    IQueryable<T> result = IQueryableDynamicFilterExtensions.Sort(yourQueryable, yourSortCollection);
+    ```
+
+4. **GetAllFilters**: Retrieves all filters from a given `Filter` structure.
+
+    ```csharp
+    IList<Filter> filters = IQueryableDynamicFilterExtensions.GetAllFilters(yourFilter);
+    ```
+
+5. **Transform**: Transforms a single filter into a Dynamic LINQ expression.
+
+    ```csharp
+    string dynamicExpression = IQueryableDynamicFilterExtensions.Transform(yourFilter, yourFiltersList);
+    ```
+
+## DynamicQuery, Filter, and Sort Models
+
+The utility relies on the following models:
+
+- **DynamicQuery**: Represents a dynamic query with optional filters and sorting.
+- **Filter**: Represents a filter condition with optional nested filters.
+- **Sort**: Represents a sorting condition with a field and direction.
+
+## Example
+
+```csharp
+// Create your IQueryable collection
+IQueryable<EntityType> entities = ...;
+
+// Create a dynamic query with filters and sorting
+DynamicQuery dynamicQuery = new DynamicQuery
+{
+    Filter = new Filter
+    {
+        Field = "PropertyName",
+        Operator = "eq",
+        Value = "SomeValue",
+        Logic = "and",
+        Filters = new List<Filter>
+        {
+            new Filter
+            {
+                Field = "AnotherProperty",
+                Operator = "gt",
+                Value = "42"
+            }
+        }
+    },
+    Sort = new List<Sort>
+    {
+        new Sort
+        {
+            Field = "PropertyName",
+            Dir = "asc"
+        }
+    }
+};
+
+// Apply dynamic filtering and sorting
+IQueryable<EntityType> result = entities.ToDynamic(dynamicQuery);
+```
