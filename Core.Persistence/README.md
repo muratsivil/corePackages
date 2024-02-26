@@ -1,6 +1,6 @@
 ### Navigate:
 - [DynamicQuery Class](#dynamic-query-implementation)
-- [IQueryable Paginate Extensions](#iqueryable-paginate-extensions-1)
+- [IQueryable Paginate Extensions](#iqueryable-paginate-extensions)
 - [Sync and Async Repository](#sync-and-async-repository)
 ---
 
