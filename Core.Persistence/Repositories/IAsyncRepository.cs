@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace Core.Persistence.Repositories
 {
     // Generic repository interface for asynchronous operations on entities
-    public interface IAsyncRepository<TEntity, TEntityId> : IQueryable<TEntity>
+    public interface IAsyncRepository<TEntity, TEntityId> : IQuery<TEntity>
         where TEntity : Entity<TEntityId> // Assumes entities implement some base class Entity<TEntityId>
     {
         // Get a single entity based on a predicate

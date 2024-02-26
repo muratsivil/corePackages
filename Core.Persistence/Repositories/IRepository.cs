@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Core.Persistence.Repositories
 {
     // Generic repository interface for synchronous operations on entities
-    public interface IRepository<TEntity, TEntityId> : IQueryable<TEntity>
+    public interface IRepository<TEntity, TEntityId> : IQuery<TEntity>
         where TEntity : Entity<TEntityId> // Assumes entities implement some base class Entity<TEntityId>
     {
         // Get a single entity based on a predicate
